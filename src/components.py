@@ -10,8 +10,8 @@ class Link:
 class Renderable:
     def __init__(self, image: pygame.Surface, x_pos: int, y_pos: int) -> None:
         self.image: pygame.Surface = image
-        self.x: int = x_pos
-        self.y: int = y_pos
+        self.x_pos: int = x_pos
+        self.y_pos: int = y_pos
         self.width: int = image.get_width()
         self.height: int = image.get_height()
         

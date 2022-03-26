@@ -3,6 +3,7 @@ import esper
 
 from components import HealthStat, HungerStat, SanityStat, ReputationStat
 from global_vars import FPS, RESOLUTION, FONT
+from handlers import WorldEventHandler
 from processors import RenderProcessor, BarProcessor
 from spritesheet import Fontsheet
 from ui import ShortText, UI
@@ -28,11 +29,13 @@ class App:
             HealthStat(current=50, maximum=120),
             HungerStat(current=50, maximum=300),
             SanityStat(current=50, maximum=400),
-            ReputationStat(current=50, maximum=100)
-        )
+            ReputationStat(current=50, maximum=100))
 
         self.ui = UI(player=self.player, font=self.fontsheet, world=self.world)
         self.ui.add_bars()
+
+        self.event_handlers = {"world": WorldEventHandler(player=self.player, world=self.world)}
+        self.active_event_handler = self.event_handlers["world"]
 
     def run(self):
         self.running = True
@@ -41,11 +44,7 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_n:
-                        self.world.component_for_entity(self.player, HealthStat).current += 10
-                    if event.key == pygame.K_e:
-                        self.world.component_for_entity(self.player, HealthStat).current -= 10
+                self.active_event_handler.handle(event)
             self.world.process()
 
 

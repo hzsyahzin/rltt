@@ -8,7 +8,7 @@ from ui import Bar
 
 
 class BarProcessor(esper.Processor):
-    def process(self, *args):
+    def process(self, *args, **kwargs):
         for entity, (rend, bar, link) in self.world.get_components(Renderable, Bar, Link):
             stat: EntityStat = self.world.component_for_entity(entity=link.entity, component_type=link.component)
             rend.image.fill(bar.bg_color)
@@ -21,8 +21,8 @@ class RenderProcessor(esper.Processor):
         self.surface: pygame.Surface = surface
         self.clear_color: List[int] = clear_color
 
-    def process(self, *args) -> None:
+    def process(self, *args, **kwargs) -> None:
         self.surface.fill(self.clear_color)
         for entity, rend in self.world.get_component(Renderable):
-            self.surface.blit(rend.image, (rend.x, rend.y))
+            self.surface.blit(rend.image, (rend.x_pos, rend.y_pos))
         pygame.display.flip()
