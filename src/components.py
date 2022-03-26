@@ -23,20 +23,28 @@ class EntityStat:
 
 
 class HealthStat(EntityStat):
+    name = "HPT"
+
     def __init__(self, current: int, maximum: int):
         super(HealthStat, self).__init__(current, maximum)
 
 
 class HungerStat(EntityStat):
+    name = "HNG"
+
     def __init__(self, current: int, maximum: int):
         super(HungerStat, self).__init__(current, maximum)
 
 
 class SanityStat(EntityStat):
+    name = "SAN"
+
     def __init__(self, current: int, maximum: int):
         super(SanityStat, self).__init__(current, maximum)
 
 
 class ReputationStat(EntityStat):
+    name = "REP"
+
     def __init__(self, current: int, maximum: int):
         super(ReputationStat, self).__init__(current, maximum)

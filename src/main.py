@@ -3,7 +3,7 @@ import esper
 
 from components import HealthStat, HungerStat, SanityStat, ReputationStat
 from global_vars import FPS, RESOLUTION, FONT
-from processors import RenderProcessor
+from processors import RenderProcessor, BarProcessor
 from spritesheet import Fontsheet
 from ui import ShortText, UI
 
@@ -18,6 +18,7 @@ class App:
         self.screen = pygame.display.set_mode(size=self.screen_size)
 
         self.world = esper.World()
+        self.world.add_processor(BarProcessor())
         self.world.add_processor(RenderProcessor(surface=self.screen))
 
         self.fontsheet = Fontsheet(filename="res/font_sheet_2.png", tile_size=10, font_string=FONT)
@@ -42,7 +43,9 @@ class App:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_n:
-                        self.world.component_for_entity(self.player, SanityStat).current += 10
+                        self.world.component_for_entity(self.player, HealthStat).current += 10
+                    if event.key == pygame.K_e:
+                        self.world.component_for_entity(self.player, HealthStat).current -= 10
             self.world.process()
 
 
