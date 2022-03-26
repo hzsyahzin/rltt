@@ -20,8 +20,23 @@ class EntityStat:
     def __init__(self, current: int, maximum: int):
         self.current = current
         self.maximum = maximum
-        
-        
+
+
 class HealthStat(EntityStat):
     def __init__(self, current: int, maximum: int):
         super(HealthStat, self).__init__(current, maximum)
+
+
+class HungerStat(EntityStat):
+    def __init__(self, current: int, maximum: int):
+        super(HungerStat, self).__init__(current, maximum)
+
+
+class SanityStat(EntityStat):
+    def __init__(self, current: int, maximum: int):
+        super(SanityStat, self).__init__(current, maximum)
+
+
+class ReputationStat(EntityStat):
+    def __init__(self, current: int, maximum: int):
+        super(ReputationStat, self).__init__(current, maximum)

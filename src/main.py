@@ -1,11 +1,11 @@
 import pygame
 import esper
 
-from components import HealthStat, Link
-from globals import FPS, RESOLUTION, FONT
+from components import HealthStat, HungerStat, SanityStat, ReputationStat
+from global_vars import FPS, RESOLUTION, FONT
 from processors import RenderProcessor
 from spritesheet import Fontsheet
-from ui import ShortText, Bar
+from ui import ShortText, UI
 
 
 # Core
@@ -24,13 +24,14 @@ class App:
 
         self.player = self.world.create_entity(
             ShortText(text="@", font=self.fontsheet, x_pos=30, y_pos=30).as_renderable(),
-            HealthStat(current=50, maximum=120)
+            HealthStat(current=50, maximum=120),
+            HungerStat(current=50, maximum=300),
+            SanityStat(current=50, maximum=400),
+            ReputationStat(current=50, maximum=100)
         )
 
-        health_bar = self.world.create_entity(
-            Bar(width=50, height=10, bg_color=[255, 0, 0], fg_color=[0, 255, 0], x_pos=0, y_pos=0),
-            Link(entity=self.player, component=HealthStat)
-        )
+        self.ui = UI(player=self.player, font=self.fontsheet, world=self.world)
+        self.ui.add_bars()
 
     def run(self):
         self.running = True
@@ -39,6 +40,9 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_n:
+                        self.world.component_for_entity(self.player, SanityStat).current += 10
             self.world.process()
 
 

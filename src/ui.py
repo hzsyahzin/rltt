@@ -1,10 +1,52 @@
 from typing import List
 
+import esper
 import pygame
 
-from globals import TILE_SIZE
-from components import Renderable
+from global_vars import TILE_SIZE, active_colors
+from components import Renderable, Link, HealthStat, HungerStat, SanityStat, ReputationStat
 from spritesheet import Fontsheet
+
+
+class UI:
+    def __init__(self, player: int, font: Fontsheet, world: esper.World) -> None:
+        self.player = player
+        self.fontsheet = font
+        self.world = world
+
+    def add_bars(self) -> None:
+        x = 685
+        y = 5
+        self.world.create_entity(
+            Bar(width=50, height=6, bg_color=active_colors["bar_dark"],
+                fg_color=active_colors["bar_bright"], x_pos=x + 40, y_pos=y + 2),
+            ShortText(text="HP", font=self.fontsheet, x_pos=x + 10, y_pos=y).as_renderable(),
+            Link(entity=self.player, component=HealthStat)
+        )
+
+        x += 100
+        self.world.create_entity(
+            Bar(width=50, height=6, bg_color=active_colors["bar_dark"],
+                fg_color=active_colors["bar_bright"], x_pos=x + 40, y_pos=y + 2),
+            ShortText(text="HNG", font=self.fontsheet, x_pos=x, y_pos=y).as_renderable(),
+            Link(entity=self.player, component=HungerStat)
+        )
+
+        x += 100
+        self.world.create_entity(
+            Bar(width=50, height=6, bg_color=active_colors["bar_dark"],
+                fg_color=active_colors["bar_bright"], x_pos=x + 40, y_pos=y + 2),
+            ShortText(text="SAN", font=self.fontsheet, x_pos=x, y_pos=y).as_renderable(),
+            Link(entity=self.player, component=SanityStat)
+        )
+
+        x += 100
+        self.world.create_entity(
+            Bar(width=50, height=6, bg_color=active_colors["bar_dark"],
+                fg_color=active_colors["bar_bright"], x_pos=x + 40, y_pos=y + 2),
+            ShortText(text="REP", font=self.fontsheet, x_pos=x, y_pos=y).as_renderable(),
+            Link(entity=self.player, component=ReputationStat)
+        )
 
 
 class ShortText:
@@ -33,3 +75,6 @@ class Bar:
         self.bg_color = bg_color
         self.x_pos = x_pos
         self.y_pos = y_pos
+
+    def as_renderable(self) -> Renderable:
+        return Renderable(self.image, self.x_pos, self.y_pos)
