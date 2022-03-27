@@ -1,7 +1,7 @@
 import esper
 import pygame
 
-from components import Renderable
+from components import Renderable, Status
 
 
 class WorldEventHandler:
@@ -12,10 +12,12 @@ class WorldEventHandler:
     def handle(self, event: pygame.event.Event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                self.world.component_for_entity(self.player, Renderable).y_pos += -10
+                self.world.component_for_entity(self.player, Renderable).y_pos += -20
             if event.key == pygame.K_a:
-                self.world.component_for_entity(self.player, Renderable).x_pos += -10
+                self.world.component_for_entity(self.player, Renderable).x_pos += -20
             if event.key == pygame.K_r:
-                self.world.component_for_entity(self.player, Renderable).y_pos += 10
+                self.world.component_for_entity(self.player, Renderable).y_pos += 20
             if event.key == pygame.K_s:
-                self.world.component_for_entity(self.player, Renderable).x_pos += 10
+                self.world.component_for_entity(self.player, Renderable).x_pos += 20
+            if event.key == pygame.K_SPACE:
+                self.world.component_for_entity(self.player, Status).stats["hunger"].current += -20

@@ -1,7 +1,7 @@
 import pygame
 import esper
 
-from components import HealthStat, HungerStat, SanityStat, ReputationStat
+from components import HealthStat, HungerStat, SanityStat, ReputationStat, Status, Details
 from global_vars import FPS, RESOLUTION, FONT
 from handlers import WorldEventHandler
 from processors import RenderProcessor, BarProcessor
@@ -25,13 +25,17 @@ class App:
         self.fontsheet = Fontsheet(filename="res/font_sheet_2.png", tile_size=10, font_string=FONT)
 
         self.player = self.world.create_entity(
-            ShortText(text="@", font=self.fontsheet, x_pos=30, y_pos=30).as_renderable(),
-            HealthStat(current=50, maximum=120),
-            HungerStat(current=50, maximum=300),
-            SanityStat(current=50, maximum=400),
-            ReputationStat(current=50, maximum=100))
+            ShortText(text="@", font=self.fontsheet, x_pos=30, y_pos=30).as_renderable(scale=1.5),
+            Details(name="hzsyahzin", age=19),
+            Status(
+                HealthStat(current=50, maximum=120),
+                HungerStat(current=50, maximum=300),
+                SanityStat(current=50, maximum=400),
+                ReputationStat(current=50, maximum=100)
+            ))
 
         self.ui = UI(player=self.player, font=self.fontsheet, world=self.world)
+        self.ui.add_status()
         self.ui.add_bars()
 
         self.event_handlers = {"world": WorldEventHandler(player=self.player, world=self.world)}
